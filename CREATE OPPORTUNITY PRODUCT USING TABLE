@@ -1,0 +1,115 @@
+*** Settings ***
+Documentation          Test suite for creating a Acoount Related Contact record in Salesforce.
+Library                QWeb
+Library                QForce
+
+Suite Setup            Setup Browser
+Suite Teardown         Close Browser
+
+*** Variables ***
+${BROWSER}            chrome
+# ${login_url}         https://login.salesforce.com
+# ${User_name}         rams@9714.com
+# ${Password}          September@123
+#${User_name}         sreelekha@sfdc.com
+#${Password}          Cloud@1234
+# ${User_name}         sree1996@sfdc.com
+# ${Password}          Cloud@1234
+
+${Acc_name}            Ishan
+${contact_name}        Alasree
+${Opportunity_name}    Ishan Opportunity
+${current_url}=        GetUrl
+
+${Product_Name}        GenWatt Diesel 1000kW
+#${phone}              89898989
+*** Keywords ***
+Setup Browser
+    Open Browser       {login_url}              BROWSER
+Login
+    #[Documentation]                            Log in to Salesforce
+    GoTo               login_url
+    TypeText           User_name                {User_name}
+    TypeText           Password                 {Password}
+    ClickText          Log In
+*** Test Cases ***  
+Creating Account
+    [Tags]             Account
+    Appstate           Login
+    LaunchApp          Sales
+    ClickText          Accounts
+    ClickText          New
+    UseModal           On
+    TypeText           *Account Name            ${Acc_name}
+    ClickText          Save                     Partial_match=false
+    Sleep              5
+Creation of Related Contact
+    ClickText          Related
+    ClickText          New                      anchor=Contacts         Partial_match=false
+    #UseModal          On
+    Picklist           Salutation               Mr.
+    TypeText           Last Name                ${contact_name}
+    sleep              10
+    VerifyText         ${Acc_name}
+    sleep              10
+    ClickText          Save                     Partial_match=false
+    Sleep              5
+Creation Of Opportunity
+
+    ClickText          ${contact_name}
+    ClickText          New                      anchor=Opportunities    Partial_match=false
+    TypeText           Opportunity Name         ${Opportunity_name}
+    #VerifyText        #Account Name            ${Acc_name}
+    #Combobox          #Search Accounts...      ${Acc_name}
+    PickList           Stage                    Prospecting
+    TypeText           Close Date               12/01/2024
+    ClickText          Save                     Partial_match=false
+    Sleep              5
+    
+
+    # Creation Of Product
+    #                  ClickText                ${Opportunity_name}
+    #                  #ClickText               down                    anchor=Products Partisl_match=false
+    #                  #DropDown                Add Products anchor="1" timeout=0 index=1 unselect=False
+    #                  ClickText                Products
+    #                  ClickText                Add Products
+    #                  UseModal                 On
+    #                  ClickText                Save                    Partial_match=false
+    #                  #Combobox                Search Products...      ${Product_Name}
+    #                  ComboBox                 Search Products...      GenWatt Diesel 1000kW
+    #                  #ClickText               GenWatt Diesel 1000kW
+    #                  ClickText                Next
+    #                  #ClickText               Edit Quantity:
+    #                  #Item null
+    #                  #QVision.ClickText       Edit Quantity:          2
+    #                  #TypeText                *Quantity               2
+    #                  ClickText                Save                    partial_match=false
+Creation of Product
+    ClickText          ${Opportunity_name}
+    ClickText          Products
+    ClickText          Add Products
+    UseModal           On
+    sleep              10
+    # clickText        Save                     Partial_match=false
+    # UseTable         Add Products
+    sleep              10
+    # VerifyText       Add Products
+    ClickCell          r3c1
+    # clickCell        r4c1
+    ClickText          Next
+    ClickCell          r2c3                     2
+    # ClickCell        r3c3                     2
+    ClickText          Save
+
+Logout
+    ClickText          View profile
+    Sleep              5
+    ClickText          Log Out
+
+
+
+
+
+
+
+
