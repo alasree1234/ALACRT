@@ -1,0 +1,7 @@
+*** Variables ***
+${BROWSER}            chrome
+${login_url}          https://login.salesforce.com
+#${User_name}         sreelekha@sfdc.com
+#${Password}          Cloud@1234
+${User_name}          rams@9714.com
+${Password}           September@123
