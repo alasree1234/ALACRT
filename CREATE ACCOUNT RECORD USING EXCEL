@@ -1,0 +1,33 @@
+*** Settings ***
+Library             QForce
+Library             Collections
+Library             DataDriver                  reader_class=TestDataApi    name=Account.json
+Test Template       Create Acccount Record
+
+*** Variables ***
+${Username}         rams@9714.com
+${Password}         September@123
+${client_id}        3MVG95mg0lk4batgaLpvzcAF5zGA_Rzd5gL7LMkIUJ0H4liueolAmaAYo8Ol2e6iCTYoAo_3YDZyc5Lyyz8Tc
+${client_secret}    48EF718E97E7BC2F2792D533261FE8EA04123431D7181541C93875424E7F9197
+
+*** Test Cases ***
+Creation of Account
+
+*** Keywords ***
+Create Acccount Record
+    [Arguments]     ${Name}                     ${Rating}                   ${Phone}
+    Authenticate    ${client_id}                ${client_secret}            ${Username}          ${Password}    sandbox=false
+    ${Account}=     CreateRecord                Account                     Name=${Name}
+    ...             Rating=${Rating}
+    ...             Phone=${Phone}
+    Log             New Account Created :${Account}                         console=true
+    Revoke
+
+
+    # ${UpdateAcc}=                             QueryRecords                query=SELECT id,Name,Rating FROM Account WHERE Rating!= null
+    # ${count}      Set Variable                ${UpdateAcc}[totalSize]
+    # Skip If       ${count} == 0               Rating!= null was already updated!
+    # ${id}         Set Variable                ${UpdateAcc}[records][0][Id]
+    # UpdateRecord                              Account                     ${id}                Rating=${Rating}
+    # Revoke
+
