@@ -1,0 +1,63 @@
+*** Settings ***
+Documentation           Test suite for creating a Acoount Related Contact record in Salesforce.
+Library                 QWeb
+Library                 QForce
+Library                  String
+Suite Setup             Setup Browser
+Suite Teardown          Close Browser
+
+*** Variables *** ***
+${BROWSER}             chrome
+${login_url}           https://login.salesforce.com
+#${User_name}           sreelekha@sfdc.com
+#${Password}            Cloud@1234
+${User_name}           rams@9714.com
+${Password}            September@123
+${Acc_name}            Ishan
+${contact_name}        Alasree
+#${phone}              89898989
+${account_url}
+${contact_url}
+${a_parts}
+*** Keywords ***
+Setup Browser
+    Open Browser       ${login_url}                ${BROWSER}
+Login
+    #[Documentation]                               Log in to Salesforce
+    GoTo               ${login_url}
+    TypeText           Username                    ${User_name}
+    TypeText           Password                    ${Password}
+    ClickText          Log In
+*** Test Cases ***
+Creating Account
+    [Tags]             Account
+    Appstate           Log In
+    LaunchApp          Sales
+    ClickText          Accounts
+    ClickText          New
+    # UseModal         On
+    TypeText           *Account Name               ${Acc_name}
+    ClickText          Save                        Partial_match=false
+    Sleep              5
+    ${account_url}    GetUrl
+    ${a_parts}       Split String    ${account_url}    /
+    ${account_id}      Set Variable    ${a_parts}[5]
+Creating Contact
+    [tags]              Contact
+     Appstate        Login
+     LaunchApp       Sales
+     ClickText       Contacts
+     ClickText       New
+     Picklist        Salutation      Ms.
+     TypeText        Last Name       ${contact_name}
+     ClickText       Save            Partial_match=false
+     Sleep            5
+     ${contact_url}                  GetUrl
+
+Logout
+    ClickText          View profile
+    Sleep              5
+    ClickText          Log Out
+    TypeText    Username    rams@9714.com
+    TypeSecret    Password    september@123
+    ClickText    Log In
