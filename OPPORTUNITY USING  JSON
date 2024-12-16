@@ -1,0 +1,40 @@
+*** Settings ***
+Library                   QForce
+Library                   QWeb
+Library                   OperatingSystem
+Library                   JSONLibrary
+*** Variables ***
+${JSON_FILE_PATH}         ${CURDIR}/Resource/Opportunity.json
+${Username}               rams@9714.com
+${Password}               September@123
+${Consumer_Key}           3MVG95mg0lk4batgaLpvzcAF5zGA_Rzd5gL7LMkIUJ0H4liueolAmaAYo8Ol2e6iCTYoAo_3YDZyc5Lyyz8Tc
+${Consumer_Secret}        48EF718E97E7BC2F2792D533261FE8EA04123431D7181541C93875424E7F9197
+# ${Username}             sreelekha@sfdc.com
+# ${Password}             Cloud@1234
+# ${Consumer_Key}         3MVG9WVXk15qiz1I7llWetsxyKMToMNOrAFOjDHr5ti6QUsGyMLxJUGfr8JdwcFled7b_AWgEm0i0djgovifF
+# ${Consumer_Secret}      9F75AC45278222A1B0A53C207E9636AD5F5DA6D66EFA81DDE2A0FD3955F0D4A3
+
+
+*** Test Cases ***
+Opportunity CRUD Operations Using API
+    [Documentation]       Perform CRUD operations on Opportunity object using Salesforce API and data from JSON file
+    Authenticate          ${Consumer_Key}             ${Consumer_Secret}    ${Username}    ${Password}
+
+    # Read JSON File
+    ${json_data}=         Get File                    ${JSON_FILE_PATH}
+    ${Opportunity}=       Convert String To Json      ${json_data}
+
+
+    # Create Opportunity
+    ${opportunity_id}=    Create Record               Opportunity
+    ...                   Name=${Opportunity}[opportunity1][name]
+    ...                   CloseDate=${Opportunity}[opportunity1][closeDate]
+    ...                   StageName=${Opportunity}[opportunity1][stage]
+
+    #Update Opportunity
+    Update Record         Opportunity                 ${opportunity_id}
+    ...                   Name=${Opportunity}[ModifyOpportunity][name]
+    ...                   StageName=${Opportunity}[ModifyOpportunity][stage]
+
+    # #Delete Opportunity
+    # DeleteRecord        Opportunity                 ${opportunity_id}
