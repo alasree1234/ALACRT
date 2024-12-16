@@ -1,0 +1,66 @@
+*** Settings ***
+Documentation        CloudFulcrum Extensions for Copado
+Library              QForce
+Library              QWeb
+Library              String
+Resource             common.robot
+# Suite Setup        OpenBrowser                 about:blank                 ${Browser}
+Suite Setup          Setup Browser
+Suite Teardown       Close Browser
+
+
+*** Keywords ***
+Setup Browser
+    Open Browser     ${login_url}                ${BROWSER}
+Log In
+    Goto             ${loginurl}
+    TypeText         username                    ${username}
+    TypeText         password                    ${password}
+    clickText        Log In
+    
+*** Test Cases ***
+As a User I Should able to create custom metadata type to synch pipeline repository with the respective git repository.
+    # Note: This is a draft test case generated with Explorer.
+    Appstate         Log In
+    # ClickText      Log In
+    ClickText        Setup
+    ClickText        Opens in a new tab
+    SwitchWindow     NEW
+    SwitchWindow     2
+    TypeText         Quick Find                  custom metadata types\n
+    ClickText        Custom Metadata Types
+    # Clicktext      Copado Utility Configuration
+    ClickText        Manage Records              anchor=Copado Utility Configuration
+    ClickText        New
+    TypeText         *Label                      CFEC SAMPLE
+    TypeText         *Copado Utility Configuration Name                      Draft
+    ClickText        Save
+    # APP LAUNCHER
+    LaunchApp        CloudFulcrum Extensions for Copado
+    # ClickText      CloudFulcrum Extensions for Copado
+    ClickText        Copado Cleanup Utilities
+    ClickText        Record Cleanup
+    ClickCheckbox    Copado User Story           on
+    clicktext        3 Months
+    clickText        Run Now
+    ClickText        Next
+    UseModal         On
+    ClickText        Okay
+    # UseTable       SelectAll
+    UseTable         Copado User Story Records
+    # UseTable       Item Number
+    ClickCell        r2c1                        On
+    ClickCell        r4c1                        On
+    # ClickCell      r4c2                        on
+    ClickText        Next
+    clickText        Recycle Bin
+    ClickText        ok
+    ClickText        View profile
+    ClickText        Log Out
+
+
+
+
+
+
+
