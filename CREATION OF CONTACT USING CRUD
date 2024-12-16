@@ -1,0 +1,64 @@
+*** Settings ***
+Documentation              Test suite for creating a Contact record in Salesforce.
+Library                    QForce
+Library                    QWeb
+Suite Setup                Setup Browser
+Suite Teardown             Close Browser
+
+*** Variables ***
+${BROWSER}                 chrome
+${login_url}               https://login.salesforce.com
+${Username}                rams@9714.com
+${Password}                September@123
+${contact_name}            Ala
+${updated_contact_name}    Alasree
+${phone}                   89898989
+
+
+
+*** Keywords ***
+Setup Browser
+    Open Browser           ${login_url}                ${BROWSER}
+Login
+    #[Documentation]       Log in to Salesforce
+    GoTo                   ${login_url}
+    TypeText               Username                    ${Username}
+    TypeText               Password                    ${Password}
+    ClickText              Log In
+    Sleep                  5
+    
+*** Test Cases ***
+ Creating Contact
+    [tags]                 Contact
+    Appstate               Login
+    LaunchApp              Sales
+    ClickText              Contacts
+    ClickText              New
+    Picklist               Salutation                  Ms.
+    TypeText               Last Name                   ${contact_name}
+    ClickText              Save                        Partial_match=false
+    Sleep                  5
+Update Contact
+    ClickText              Show more actions
+    ClickText              Edit                        anchor=submit for Approval                         Partial_match=false
+    #ClickText             Edit
+    ClickText              ${contact_name}
+    TypeText               Last Name                   ${updated_contact_name}
+    ClickText              Save                        Partial_match=false
+    Sleep                  5
+VerifyText
+    VerifyText             ${updated_contact_name}
+    sleep                  5
+DeleteContact
+    ClickText              ${updated_contact_name}
+    ClickText              Show more actions
+    ClickText              Delete                      anchor=submit for Approval                         Partial_match=false
+    UseModal               On
+    ClickText              Delete
+    
+    
+
+Logout
+    ClickText              View profile
+    Sleep                  5
+    ClickText              Log Out
