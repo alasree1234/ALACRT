@@ -1,0 +1,52 @@
+*** Settings ***
+Documentation        CloudFulcrum Extensions for Copado
+Library              QForce
+Library              QWeb
+Library              String
+# Resource           common.robot
+Suite Setup          OpenBrowser                 about:blank            ${Browser}
+Suite Teardown       Close Browser
+*** Keywords ***
+Setup Browser
+    Open Browser     ${login_url}                ${BROWSER}
+Log In
+    Go to            ${loginurl}
+    TypeText         username                    ${username}
+    TypeText         password                    ${password}
+    clickText        Log In
+
+
+*** Variables ***
+${Browser}           chrome
+${loginurl}          https://login.salesforce.com
+${username}          sreelekhacfec@gmail.com
+${password}          sree!1234
+${selectFromDate}    11/01/2024
+${selectToDate}      11/11/2024
+${Mail_Id}           sreelekha.p@cloudfulcrum.com
+
+***Test Cases***
+As a user i should be able to know the commmits 
+    Appstate         Log In
+    ClickText        Shared Component Analyzer
+    clickElement     xpath=//input[@placeholder="Search by Component Name or Environment or Release....."]
+    TypeText         Search by Component Name or Environment or Release.....          All
+    ClickElement     xpath=//input[@placeholder="Select From Date"]
+    # clickText      Current Month
+    TypeText         Select From Date            ${selectFromDate}
+    ClickElement     xpath=//input[@placeholder="Select To Date"]
+    # clickText      Current Month
+    TypeText         Select To Date              ${selectToDate}
+    ClickElement     xpath=//button[@title="Search"]
+    ClickText        Send Email
+    TypeText         Enter Mail Id               ${Mail_Id}
+    ClickText        Send                        partial_match=False
+
+Logout
+    ClickText        View profile
+    ClickText        Log Out
+
+
+
+
+
