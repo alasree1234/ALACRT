@@ -1,0 +1,11 @@
+{
+  "opportunity1": {
+    "name": "TestOpportunity",
+    "closeDate": "2024-11-25",
+    "stage": "Prospecting"
+  },
+  "ModifyOpportunity": {
+    "name": "ModifiedOpportunity",
+    "stage": "Qualification"
+  }
+}
