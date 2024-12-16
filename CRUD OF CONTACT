@@ -1,0 +1,56 @@
+*** Settings ***
+ 
+Documentation           New Account creation
+Library                 QForce
+Library                 QWeb
+Suite Setup             OpenBrowser    about:blank   ${Browser}  
+Suite Teardown          CloseBrowser
+*** Variables ***
+${Browser}              chrome
+${Login_URL}            https://login.salesforce.com
+${Username}             sree1996@sfdc.com
+${password}             cloud@12334
+${Accountname}          Cloud
+${UpdateAcc}            Lekha
+${Phone}                9876543210
+         
+ 
+*** Keywords ***
+Login to salesforce  
+  Open Browser      ${Login_URL}    ${Browser}
+  TypeText         Username         ${Username}
+  TypeText         password         ${password}
+  ClickText        Log In
+  Sleep            5
+ 
+*** Test Cases ***
+creation of Account
+    [Tags]      Account
+  Appstate      Login to salesforce
+  LaunchApp     Sales
+  ClickText     Accounts
+  ClickText     New
+  TypeText      *Account Name        ${Accountname}
+  ClickText     Save                 partial_match=false
+  Sleep         3
+Update of Account
+  ClickText     Show more actions    
+  ClickText     Edit                 anchor= New Note  partial_match=false
+  ClickText     ${Accountname}
+  TypeText      *Account Name        ${UpdateAcc}    
+  TypeText      Phone                ${Phone}
+  ClickText     Save                 partial_match=false
+  Sleep         3
+Verify Account
+  VerifyText    ${UpdateAcc}  
+  ClickText     Details
+  VerifyText    ${Phone}
+Delete Account
+  ClickText     Show more actions    
+  ClickText     Delete            anchor= New Note  partial_match=false
+  UseModal      On
+  ClickText     Delete
+Logout
+  ClickText       View profile
+  Sleep           5
+  ClickText       Log Out  anchor=Settings        partial_match=false
