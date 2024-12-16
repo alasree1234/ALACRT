@@ -1,0 +1,12 @@
+*** Variables ***
+${Acc_name}           Ishani
+${Update_Acc_name}    Ishu
+${contact_name}       Alasree
+#${phone}             89898989
+${account_url}
+${contact_url}
+${url_parts}
+${Rating}             Hot
+${update_rating}      Cold
+${isActive}           Yes,It si Active
+${serial_number}      12345
